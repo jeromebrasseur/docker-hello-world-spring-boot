@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloWorldController {
 
   @GetMapping("/")
-  public String hello(@RequestParam(name="nom", required = false, defaultvalue = "Jérôme")String nom) {
+  public String hello(@RequestParam(name="nom", required = false, defaultValue = "Jérôme")String nom) {
     return "Salut " + nom + ", bienvenue au Spring-Boot CI/CD Infoline";
   }
 }
