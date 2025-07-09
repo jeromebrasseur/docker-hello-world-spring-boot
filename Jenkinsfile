@@ -14,7 +14,7 @@ pipeline {
         
         stage('Build') {
             steps {
-                bash '''
+                sh '''
                     #!/bin/bash
                     mvn clean -DskipTests install
                  '''
@@ -23,7 +23,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                bash '''
+                sh '''
                     #!/bin/bash
                     mvn test
                  '''
@@ -32,7 +32,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                bash '''
+                sh '''
                     #!/bin/bash
                     mvn jar:jar deploy:deploy
                  '''
