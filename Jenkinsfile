@@ -14,19 +14,19 @@ pipeline {
         
         stage('Build') {
             steps {
-                bat "mvn clean -DskipTests install"
+                bash "mvn clean -DskipTests install"
             }
         }
 
         stage('Test') {
             steps {
-                bat "mvn test"
+                bash "mvn test"
             }
         }
 
         stage('Deploy') {
             steps {
-                bat "mvn jar:jar deploy:deploy"
+                bash "mvn jar:jar deploy:deploy"
                 }
             }
         }
