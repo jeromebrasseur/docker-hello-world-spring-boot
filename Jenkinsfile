@@ -1,21 +1,55 @@
 pipeline {
     agent any
-    
+
+    environment {
+        mavenhome = tool 'jenkins-maven'
+        imageName = "cicd-infoline"
+        registryCredentials = "dockerhubcred"
+        registry = ""
+        dockerImage = ""
+    }
+
+    tools {
+        jdk 'jenkins-jdk'
+    }
+
     stages {
-        stage('Build') {
+        stage('Clone') {
             steps {
-                sh 'echo "Build stage..."'
+                git 'https://github.com/jeromebrasseur/docker-hello-world-spring-boot.git'
             }
         }
+
+        stage('Install dependencies') {
+            steps {
+                bat "mvn clean -DskipTests install"
+            }
+        }
+
         stage('Test') {
             steps {
-                sh 'echo "Test stage..."'
+                bat "mvn test"
             }
         }
+
+        stage('Build image') {
+            steps {
+                script {
+                    dockerImage = docker.build imageName
+                }
+            }
+        }
+
         stage('Deploy') {
             steps {
-                sh 'echo "Deploy stage..."'
+                script {
+                    withDockerRegistry([credentialsId: registryCredentials, url: ""]) {
+                        dockerImage.push()
+                    }
+                }
             }
         }
+
+
     }
 }
