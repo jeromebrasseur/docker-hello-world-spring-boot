@@ -1,12 +1,10 @@
 pipeline {
     agent any
 
-    environment {
-        mavenhome = tool 'jenkins-maven'
-    }
 
     tools {
         jdk 'jenkins-jdk'
+        maven 'jenkins-maven'
     }
 
     
