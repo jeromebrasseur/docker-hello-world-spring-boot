@@ -9,7 +9,9 @@ pipeline {
         jdk 'jenkins-jdk'
     }
 
-
+    
+    stages {
+        
         stage('Build') {
             steps {
                 bat "mvn clean -DskipTests install"
