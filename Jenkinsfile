@@ -3,10 +3,8 @@ pipeline {
 
 
     environment {
-        imageName = "cicdspringboot"
-        registryCredentials = "nexus"
-        registry = "http://69.62.107.142:9003/"
-        dockerImage = ""
+        imageName = "jeromebrasseur/cicdspringboot:latest"
+        DOCKERHUB_CREDENTIALS = credentials('dockerhubcred')
     }
 
     
@@ -17,6 +15,12 @@ pipeline {
 
     
     stages {
+
+        stage('Clone') {
+            steps {
+                git 'https://github.com/jeromebrasseur/docker-hello-world-spring-boot.git'
+            }
+        }
         
         stage('Build') {
             steps {
@@ -44,14 +48,31 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Login') {
             steps {
-                script {
-                    docker.withRegistry(registry, registryCredentials) {
-                        dockerImage.push('latest')
-                    }
-                }
+                sh '''
+                    #!/bin/bash
+                    echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                 '''
             }
+        }
+        
+        stage('Push') {
+            steps {
+                sh '''
+                    #!/bin/bash
+                    docker push $imageName
+                 '''
+            }
+        }
+    }
+
+    POST {
+        always {
+            sh '''
+                    #!/bin/bash
+                    docker logout
+                 '''
         }
     }
 }
