@@ -15,12 +15,6 @@ pipeline {
 
     
     stages {
-
-        stage('Clone') {
-            steps {
-                git 'https://github.com/jeromebrasseur/docker-hello-world-spring-boot.git'
-            }
-        }
         
         stage('Build') {
             steps {
