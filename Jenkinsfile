@@ -2,6 +2,14 @@ pipeline {
     agent any
 
 
+    environment {
+        imageName = "cicdspringboot"
+        registryCredentials = "nexus"
+        registry = "http://69.62.107.142:9003/"
+        dockerImage = ""
+    }
+
+    
     tools {
         jdk 'jenkins-jdk'
         maven 'jenkins-maven'
@@ -28,11 +36,19 @@ pipeline {
             }
         }
 
+        stage('Build image') {
+            steps {
+                script {
+                    dockerImage = docker.build imageName
+                }
+            }
+        }
+
         stage('Deploy') {
             steps {
                 sh '''
                     #!/bin/bash
-                    mvn jar:jar deploy:deploy
+                    echo "deploy image docker"
                  '''
                 }
             }
