@@ -46,12 +46,12 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh '''
-                    #!/bin/bash
-                    echo "deploy image docker"
-                 '''
+                script {
+                    docker.withRegistry(registry, registryCredentials) {
+                        dockerImage.push('latest')
+                    }
                 }
             }
         }
-
+    }
 }
