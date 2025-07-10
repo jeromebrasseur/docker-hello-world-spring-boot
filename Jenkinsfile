@@ -67,7 +67,7 @@ pipeline {
         }
     }
 
-    POST {
+    post {
         always {
             sh '''
                     #!/bin/bash
