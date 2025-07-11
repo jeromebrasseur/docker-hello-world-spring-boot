@@ -1,6 +1,6 @@
 # Deploy Hello World Java Spring Boot using Jenkins
 
-<p align="center"><img src="img/springboot-jenkins.png" width="50%"></p>
+<p align="center"><img src="img/springboot-jenkins.png" width="70%"></p>
 
 ----
 
