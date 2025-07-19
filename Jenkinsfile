@@ -5,8 +5,6 @@ pipeline {
     environment {
         imageName = "jeromebrasseur/cicdspringboot:latest"
         DOCKERHUB_CREDENTIALS = credentials('dockerhubcred')
-        AWS_REGION = "eu-west-3"
-        CLUSTER_NAME = "infoline-eks-cluster"
     }
 
     
