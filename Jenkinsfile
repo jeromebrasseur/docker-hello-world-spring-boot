@@ -34,7 +34,7 @@ pipeline {
             }
         }
 
-        stage('Build image') {
+        stage('Build Docker image') {
             steps {
                 script {
                     dockerImage = docker.build imageName
@@ -42,20 +42,22 @@ pipeline {
             }
         }
 
-        stage('Login') {
+        stage('Push to DockerHub') {
             steps {
                 sh '''
                     #!/bin/bash
                     echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                    docker push $imageName
                  '''
             }
         }
         
-        stage('Push') {
+        stage('Deploy to EKS') {
             steps {
                 sh '''
                     #!/bin/bash
-                    docker push $imageName
+                    kubectl apply -f k8s/deployment.yaml
+                    kubectl apply -f k8s/service.yaml
                  '''
             }
         }
