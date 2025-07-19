@@ -53,27 +53,6 @@ pipeline {
                  '''
             }
         }
-
-        stage('Configure kubectl') {
-            steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'awscred']]) {
-                    withEnv(["AWS_DEFAULT_REGION=${AWS_REGION}", "AWS_REGION=${AWS_REGION}"]) {
-                        sh 'aws sts get-caller-identity'
-                        sh 'aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME'
-                    }
-                }
-            }
-        }
-        
-        stage('Deploy to EKS') {
-            steps {
-                sh '''
-                    #!/bin/bash
-                    kubectl apply -f k8s/deployment.yaml
-                    kubectl apply -f k8s/service.yaml
-                 '''
-            }
-        }
     }
 
     post {
