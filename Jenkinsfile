@@ -60,7 +60,7 @@ pipeline {
                     sh '''
                         #!/bin/bash
                         aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
-                        env
+                        aws sts get-caller-identity
                     '''
                 }
             }
