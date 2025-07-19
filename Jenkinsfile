@@ -57,14 +57,10 @@ pipeline {
         stage('Configure kubectl') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'awscred']]) {
-                    sh '''
-                        #!/bin/bash
-                        export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-                        export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-                        export AWS_DEFAULT_REGION=$AWS_REGION
-                        
-                        aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
-                    '''
+                    withEnv(["AWS_DEFAULT_REGION=${AWS_REGION}", "AWS_REGION=${AWS_REGION}"]) {
+                        sh 'aws sts get-caller-identity'
+                        sh 'aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME'
+                    }
                 }
             }
         }
