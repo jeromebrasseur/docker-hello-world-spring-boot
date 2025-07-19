@@ -57,9 +57,10 @@ pipeline {
         stage('Configure kubectl') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'awscred']]) {
-                    sh """
+                    sh '''
+                        #!/bin/bash
                         aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
-                    """
+                    '''
                 }
             }
         }
